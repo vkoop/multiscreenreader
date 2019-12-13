@@ -1,10 +1,10 @@
 <template>
-    <div class="pdf-viewer full-vw-height">
+    <div class="pdf-viewer full-vw-height" >
         <v-layout align-center justify-center row fill-height v-show="loading">
             <v-progress-circular :size="50" color="red" indeterminate class="loading-spinner" />
         </v-layout>
 
-        <canvas id="pdf-view-pane" :width="width" :height="height" v-show="!loading" @click="nextPage()" @contextmenu="previousPage()" />
+        <canvas id="pdf-view-pane" :width="width" :height="height" v-show="!loading" @click="nextPage()" @contextmenu="previousPage()" v-hammer:swipe.left="nextPage" v-hammer:swipe.right="previousPage"/>
     </div>
 </template>
 
