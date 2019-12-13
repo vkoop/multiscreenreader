@@ -1,29 +1,21 @@
-const path = require('path');
-
 module.exports = {
-    //TODO cleaner solution with integration into gradle
-    outputDir: path.resolve(__dirname, './src/main/resources/static'),
-
     pages: {
         first: {
-            entry: __dirname + '/src/main/webapp/src/main.js',
+            entry: __dirname + '/src/webapp/src/main.js',
             template: __dirname + '/public/index.html'
         },
         second: {
-            entry: __dirname + '/src/main/webapp/src/mainSecond.js',
+            entry: __dirname + '/src/webapp/src/mainSecond.js',
             template: __dirname + '/public/indexSecond.html'
         }
     },
 
     configureWebpack: {
-        context: __dirname + '/src/main/webapp/src',
+        context: __dirname + '/src/webapp/src',
         resolve: {
             alias: {
-                '@': __dirname + '/src/main/webapp/src'
+                '@': __dirname + '/src/webapp/src'
             }
-        },
-        entry: {
-            app: './main.js'
         }
     }
 };
