@@ -21,7 +21,7 @@ import transitions from 'vuetify/es5/components/transitions';
 
 import global from './less/global.less'; //eslint-disable-line no-unused-vars
 
-import { store } from './state/appState';
+import { store } from './store/appStore';
 
 Vue.config.productionTip = false;
 
