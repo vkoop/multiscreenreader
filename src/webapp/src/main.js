@@ -25,10 +25,6 @@ import { store } from './store/appStore';
 
 Vue.config.productionTip = false;
 
-
-import { VueHammer } from 'vue2-hammer'
-Vue.use(VueHammer)
-
 Vue.use({
     components: {
         VApp,

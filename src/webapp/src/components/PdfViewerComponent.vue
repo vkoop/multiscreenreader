@@ -1,10 +1,10 @@
 <template>
-    <div class="pdf-viewer full-vw-height" >
+    <div class="pdf-viewer full-vw-height">
         <v-layout align-center justify-center row fill-height v-show="loading">
             <v-progress-circular :size="50" color="red" indeterminate class="loading-spinner" />
         </v-layout>
 
-        <canvas id="pdf-view-pane" :width="width" :height="height" v-show="!loading" @click="nextPage()" @contextmenu="previousPage()" v-hammer:swipe.left="nextPage" v-hammer:swipe.right="previousPage"/>
+        <canvas id="pdf-view-pane" :width="width" :height="height" v-show="!loading" @click="nextPage()" @contextmenu="previousPage()" />
     </div>
 </template>
 
@@ -12,6 +12,8 @@
 import pdfjs from 'pdfjs-dist';
 import worker from 'pdfjs-dist/build/pdf.worker';
 import { remote } from 'electron';
+
+import Hammer from 'hammerjs';
 
 const fs = remote.require('fs');
 
@@ -99,10 +101,18 @@ export default {
         this.wrapper = document.querySelector(this.wrapperSelector);
         this.canvas = document.getElementById('pdf-view-pane');
 
-        this.loadCurrentPage();
+        this.loadCurrentDocument();
 
         window.addEventListener('resize', () => {
             this.loadCurrentPage();
+        });
+
+        const mc = new Hammer(this.wrapper);
+        mc.on('swipeleft', () => {
+            this.nextPage();
+        });
+        mc.on('swiperight', () => {
+            this.previousPage();
         });
     },
     watch: {
