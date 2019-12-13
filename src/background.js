@@ -38,6 +38,42 @@ function createWindow() {
         win2.close();
         win2 = null;
     });
+
+    createSeondWindow();
+}
+
+function createSeondWindow() {
+    let displays = screen.getAllDisplays();
+    let externalDisplay = displays.find(display => {
+        return display.bounds.x !== 0 || display.bounds.y !== 0;
+    });
+
+    if (externalDisplay) {
+        win2 = new BrowserWindow({
+            fullscreen: true,
+            fullscreenable: true,
+            webPreferences: {
+                nodeIntegration: true
+            },
+            x: externalDisplay.bounds.x,
+            y: externalDisplay.bounds.y
+        });
+
+        if (process.env.WEBPACK_DEV_SERVER_URL) {
+            // Load the url of the dev server if in development mode
+            win2.loadURL(process.env.WEBPACK_DEV_SERVER_URL + 'second');
+
+            if (!process.env.IS_TEST) win2.webContents.openDevTools();
+        } else {
+            createProtocol('app');
+            // Load the index.html when not in development
+            win2.loadURL('app://./second.html');
+        }
+
+        win2.on('closed', () => {
+            win2 = null;
+        });
+    }
 }
 
 app.on('open-file', (event, path) => {});
@@ -77,38 +113,6 @@ app.on('ready', async () => {
         // }
     }
     createWindow();
-
-    let displays = screen.getAllDisplays();
-    let externalDisplay = displays.find(display => {
-        return display.bounds.x !== 0 || display.bounds.y !== 0;
-    });
-
-    if (externalDisplay) {
-        win2 = new BrowserWindow({
-            fullscreen: true,
-            fullscreenable: true,
-            webPreferences: {
-                nodeIntegration: true
-            },
-            x: externalDisplay.bounds.x + 50,
-            y: externalDisplay.bounds.y + 50
-        });
-
-        if (process.env.WEBPACK_DEV_SERVER_URL) {
-            // Load the url of the dev server if in development mode
-            win2.loadURL(process.env.WEBPACK_DEV_SERVER_URL + 'second');
-
-            if (!process.env.IS_TEST) win2.webContents.openDevTools();
-        } else {
-            createProtocol('app');
-            // Load the index.html when not in development
-            win2.loadURL('app://./second.html');
-        }
-
-        win2.on('closed', () => {
-            win2 = null;
-        });
-    }
 });
 
 const isMac = process.platform === 'darwin';
