@@ -34,6 +34,9 @@ function createWindow() {
 
     win.on('closed', () => {
         win = null;
+
+        win2.close();
+        win2 = null;
     });
 }
 
