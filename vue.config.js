@@ -10,7 +10,7 @@ module.exports = {
             template: __dirname + '/public/index.html'
         },
         second: {
-            entry: __dirname + '/src/main/webapp/src/secondMain.js',
+            entry: __dirname + '/src/main/webapp/src/mainSecond.js',
             template: __dirname + '/public/indexSecond.html'
         }
     },
