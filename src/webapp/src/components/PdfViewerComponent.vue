@@ -54,11 +54,10 @@ export default {
         },
         loadCurrentDocument: function() {
             this.loading = true;
-            const self = this;
 
             if (this.filePath === '') return;
 
-            fs.readFile(this.filePath, function(err, data) {
+            fs.readFile(this.filePath, (err, data) => {
                 if (err) {
                     alert('An error ocurred reading the file :' + err.message);
                     return;
@@ -67,10 +66,10 @@ export default {
                 const typedarray = new Uint8Array(data);
 
                 pdfjs.getDocument(typedarray).promise.then(pdf => {
-                    self.pdf = pdf;
-                    self.$store.commit('setPageCount', pdf.numPages);
+                    this.pdf = pdf;
+                    this.$store.commit('setPageCount', pdf.numPages);
 
-                    self.loadCurrentPage();
+                    this.loadCurrentPage();
                 });
             });
         },
