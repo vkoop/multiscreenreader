@@ -1,11 +1,9 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-
 import createMutationsSharer from 'vuex-shared-mutations';
+import { ipcRenderer } from 'electron';
 
 Vue.use(Vuex);
-
-import { ipcRenderer } from 'electron';
 
 export const store = new Vuex.Store({
     state: {
@@ -36,6 +34,5 @@ export const store = new Vuex.Store({
 });
 
 ipcRenderer.on('load-file-event', (event, { path }) => {
-    console.log("load event")
     store.commit('selectItem', path);
 });

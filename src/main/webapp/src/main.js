@@ -23,8 +23,6 @@ import global from './less/global.less'; //eslint-disable-line no-unused-vars
 
 import { store } from './state/appState';
 
-
-
 Vue.config.productionTip = false;
 
 Vue.use({
