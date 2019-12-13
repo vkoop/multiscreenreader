@@ -4,16 +4,15 @@
             <v-progress-circular :size="50" color="red" indeterminate class="loading-spinner" />
         </v-layout>
 
-        <canvas id="pdf-view-pane" width="100px;" v-show="!loading" @click="nextPage()" @contextmenu="previousPage()" />
+        <canvas id="pdf-view-pane" v-show="!loading" @click="nextPage()" @contextmenu="previousPage()" />
     </div>
 </template>
 
 <script>
 import pdfjs from 'pdfjs-dist';
-
 import worker from 'pdfjs-dist/build/pdf.worker';
-
 import { remote } from 'electron';
+
 const fs = remote.require('fs');
 
 pdfjs.GlobalWorkerOptions.workerSrc = worker;
@@ -21,7 +20,11 @@ pdfjs.GlobalWorkerOptions.workerSrc = worker;
 export default {
     name: 'PdfViewer',
     data: () => ({
-        loading: true
+        loading: true,
+        width: 0,
+        height: 0,
+        wrapper: null,
+        canvas: null
     }),
     props: {
         filePath: String,
@@ -31,6 +34,7 @@ export default {
             default: 0
         }
     },
+
     computed: {
         currentPage() {
             let page = this.$store.state.currentPage;
@@ -48,12 +52,11 @@ export default {
         previousPage: function() {
             this.$store.commit('decrementPage');
         },
-        loadCurrentPage: function() {
+        loadCurrentDocument: function() {
             this.loading = true;
+            const self = this;
 
             if (this.filePath === '') return;
-
-            const self = this;
 
             fs.readFile(this.filePath, function(err, data) {
                 if (err) {
@@ -63,41 +66,50 @@ export default {
 
                 const typedarray = new Uint8Array(data);
 
-                pdfjs
-                    .getDocument(typedarray)
-                    .promise.then(pdf => {
-                        self.$store.commit('setPageCount', pdf.numPages);
-                        return pdf.getPage(self.currentPage);
-                    })
-                    .then(page => {
-                        self.loading = false;
+                pdfjs.getDocument(typedarray).promise.then(pdf => {
+                    self.pdf = pdf;
+                    self.$store.commit('setPageCount', pdf.numPages);
 
-                        let desiredWidth = document.querySelector(self.wrapperSelector).clientWidth;
-                        let viewport = page.getViewport({ scale: 1 });
-                        let scale = desiredWidth / viewport.width;
-                        let scaledViewport = page.getViewport({ scale: scale });
+                    self.loadCurrentPage();
+                });
+            });
+        },
+        loadCurrentPage: function() {
+            if (this.pdf === undefined) return;
 
-                        let canvas = document.getElementById('pdf-view-pane');
-                        let context = canvas.getContext('2d');
-                        canvas.height = scaledViewport.height;
-                        canvas.width = scaledViewport.width;
+            this.pdf.getPage(this.currentPage).then(page => {
+                this.loading = false;
 
-                        let renderContext = {
-                            canvasContext: context,
-                            viewport: scaledViewport
-                        };
-                        page.render(renderContext);
-                    });
+                let desiredWidth = this.wrapper.clientWidth;
+                let viewport = page.getViewport({ scale: 1 });
+                let scale = desiredWidth / viewport.width;
+                let scaledViewport = page.getViewport({ scale: scale });
+
+                this.canvas.height = scaledViewport.height;
+                this.canvas.width = scaledViewport.width;
+
+                let renderContext = {
+                    canvasContext: this.canvas.getContext('2d'),
+                    viewport: scaledViewport
+                };
+                page.render(renderContext);
             });
         }
     },
     mounted() {
+        this.wrapper = document.querySelector(this.wrapperSelector);
+        this.canvas = document.getElementById('pdf-view-pane');
+
         this.loadCurrentPage();
+
+        window.addEventListener('resize', () => {
+            this.loadCurrentPage();
+        });
     },
     watch: {
         filePath: {
             handler: function() {
-                this.loadCurrentPage();
+                this.loadCurrentDocument();
             }
         },
         currentPage: {

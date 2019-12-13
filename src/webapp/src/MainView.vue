@@ -20,9 +20,7 @@ export default {
         ...VApp,
         ...VFlex,
         ...VLayout,
-        ...VDataTable,
         ...VContent,
-        ...VTextField,
         PdfViewer
     },
 
