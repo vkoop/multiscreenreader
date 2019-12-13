@@ -4,7 +4,7 @@
             <v-progress-circular :size="50" color="red" indeterminate class="loading-spinner" />
         </v-layout>
 
-        <canvas id="pdf-view-pane" v-show="!loading" @click="nextPage()" @contextmenu="previousPage()" />
+        <canvas id="pdf-view-pane" :width="width" :height="height" v-show="!loading" @click="nextPage()" @contextmenu="previousPage()" />
     </div>
 </template>
 
@@ -85,8 +85,8 @@ export default {
                 let scale = desiredWidth / viewport.width;
                 let scaledViewport = page.getViewport({ scale: scale });
 
-                this.canvas.height = scaledViewport.height;
-                this.canvas.width = scaledViewport.width;
+                this.height = scaledViewport.height;
+                this.width = scaledViewport.width;
 
                 let renderContext = {
                     canvasContext: this.canvas.getContext('2d'),
