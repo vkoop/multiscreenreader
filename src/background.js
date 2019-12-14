@@ -49,6 +49,8 @@ function createSeondWindow() {
     });
 
     if (externalDisplay) {
+        win.webContents.send('set-active-displays', 2);
+
         win2 = new BrowserWindow({
             fullscreen: true,
             fullscreenable: true,

@@ -8,7 +8,7 @@ Vue.use(Vuex);
 export const store = new Vuex.Store({
     state: {
         currentPage: 1,
-        displays: 2,
+        displays: 1,
         selectedItem: ''
     },
     plugins: [createMutationsSharer({ predicate: () => true })],
@@ -29,10 +29,17 @@ export const store = new Vuex.Store({
         },
         setPageCount(state, pageCount) {
             state.pageCount = pageCount;
+        },
+        setDisplayCount(state, displayCount) {
+            state.displays = displayCount;
         }
     }
 });
 
 ipcRenderer.on('load-file-event', (event, { path }) => {
     store.commit('selectItem', path);
+});
+
+ipcRenderer.on('set-active-displays', (event, displaycount) => {
+    store.commit('setDisplayCount', displaycount);
 });
