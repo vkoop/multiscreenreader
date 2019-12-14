@@ -39,10 +39,10 @@ function createWindow() {
         win2 = null;
     });
 
-    createSeondWindow();
+    createSecondWindow();
 }
 
-function createSeondWindow() {
+function createSecondWindow() {
     let displays = screen.getAllDisplays();
     let externalDisplay = displays.find(display => {
         return display.bounds.x !== 0 || display.bounds.y !== 0;
