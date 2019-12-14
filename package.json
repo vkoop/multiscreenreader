@@ -6,7 +6,7 @@
   "scripts": {
     "test:unit": "vue-cli-service test:unit",
     "test:e2e": "vue-cli-service test:e2e",
-    "lint": "vue-cli-service lint ./webapp",
+    "lint": "vue-cli-service lint ./src/",
     "build": "vue-cli-service electron:build",
     "serve": "vue-cli-service electron:serve",
     "postinstall": "electron-builder install-app-deps",
