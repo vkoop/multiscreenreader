@@ -4,9 +4,18 @@
             <v-row align="center" justify="center" v-show="loading" class="full-vw-height">
                 <v-progress-circular :size="50" color="red" indeterminate class="loading-spinner" />
             </v-row>
-        </v-container>
 
-        <canvas id="pdf-view-pane" :width="width" :height="height" v-show="!loading" @click="nextPage()" @contextmenu="previousPage()" />
+            <div v-show="!loading" class="d-flex flex-column justify-end full-vw-height">
+                <canvas
+                    id="pdf-view-pane"
+                    :width="width"
+                    :height="height"
+                    v-show="!loading"
+                    @click="nextPage()"
+                    @contextmenu="previousPage()"
+                />
+            </div>
+        </v-container>
     </div>
 </template>
 
