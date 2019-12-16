@@ -1,11 +1,11 @@
 <template>
     <div class="pdf-viewer">
-        <v-container style="padding: 0px;">
+        <v-container style="padding: 0;">
             <v-row align="center" justify="center" v-show="loading" class="full-vw-height">
                 <v-progress-circular :size="50" color="red" indeterminate class="loading-spinner" />
             </v-row>
 
-            <div v-show="!loading" class="d-flex flex-column justify-end full-vw-height">
+            <div v-show="!loading" class="d-flex flex-column justify-end" style="min-height: 100vh;">
                 <canvas
                     id="pdf-view-pane"
                     :width="width"
