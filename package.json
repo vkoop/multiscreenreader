@@ -1,6 +1,6 @@
 {
   "name": "multiscreenreader",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "private": true,
   "author": "Viktor Kooop <info@vkoop.de> (https://vkoop.de)",
   "scripts": {
@@ -15,14 +15,15 @@
   },
   "main": "background.js",
   "dependencies": {
+
+  },
+  "devDependencies": {
     "hammerjs": "^2.0.8",
     "pdfjs-dist": "^2.3.200",
     "vue": "^2.6.10",
     "vuetify": "^2.1.14",
     "vuex": "^3.1.2",
-    "vuex-shared-mutations": "^1.0.2"
-  },
-  "devDependencies": {
+    "vuex-shared-mutations": "^1.0.2",
     "vuetify-loader": "^1.4.3",
     "sass-loader": "^8.0.0",
     "prettier": "^1.19.1",
