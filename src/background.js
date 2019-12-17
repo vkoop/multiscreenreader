@@ -75,7 +75,9 @@ function createSecondWindow() {
         win2.on('closed', () => {
             win2 = null;
 
-            win.webContents.send('set-active-displays', 1);
+            if (win) {
+                win.webContents.send('set-active-displays', 1);
+            }
         });
     }
 }
