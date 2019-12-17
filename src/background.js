@@ -10,6 +10,11 @@ const isDevelopment = process.env.NODE_ENV !== 'production';
 let win;
 let win2;
 
+let loadingResolver;
+let finishedLoadingPromise = new Promise((resolve) => {
+    loadingResolver = resolve;
+});
+
 // Scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged([{ scheme: 'app', privileges: { secure: true, standard: true } }]);
 
@@ -20,6 +25,10 @@ function createWindow() {
         webPreferences: {
             nodeIntegration: true
         }
+    });
+
+    win.webContents.addListener('did-finish-load', () => {
+        loadingResolver();
     });
 
     if (process.env.WEBPACK_DEV_SERVER_URL) {
@@ -49,7 +58,9 @@ function createSecondWindow() {
     });
 
     if (externalDisplay) {
-        win.webContents.send('set-active-displays', 2);
+        finishedLoadingPromise.then(() => {
+            win.webContents.send('set-active-displays', 2);
+        });
 
         win2 = new BrowserWindow({
             fullscreen: true,
@@ -82,7 +93,11 @@ function createSecondWindow() {
     }
 }
 
-app.on('open-file', (event, path) => {});
+app.on('open-file', (event, path) => {
+    finishedLoadingPromise.then(() => {
+        win.webContents.send('load-file-event', { path: filePaths[0] });
+    });
+});
 
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {
@@ -155,8 +170,6 @@ const template = [
                             properties: ['openFile']
                         })
                         .then(({ filePaths }) => {
-                            console.log('loaded file: ');
-                            console.log(filePaths);
                             win.webContents.send('load-file-event', { path: filePaths[0] });
                         });
                 }
