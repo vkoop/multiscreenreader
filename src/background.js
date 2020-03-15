@@ -11,7 +11,7 @@ let win;
 let win2;
 
 let loadingResolver;
-let finishedLoadingPromise = new Promise((resolve) => {
+let finishedLoadingPromise = new Promise(resolve => {
     loadingResolver = resolve;
 });
 
