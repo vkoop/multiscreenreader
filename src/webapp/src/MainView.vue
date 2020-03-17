@@ -1,7 +1,13 @@
+import { dialog } from "electron";
 <template>
     <v-app>
         <v-content>
-            <pdf-viewer wrapper-selector=".v-content" :file-path="fileUrl" v-bind:offset="0"></pdf-viewer>
+            <pdf-viewer wrapper-selector=".v-content" :file-path="fileUrl" v-bind:offset="0" v-if="fileUrl"/>
+            <v-container  v-if="!fileUrl">
+                <v-row justify="center" align="center" style="height: 100vw;">
+                    <v-btn  @click="openfile()">Select file</v-btn>
+                </v-row>
+            </v-container>
         </v-content>
     </v-app>
 </template>
@@ -10,9 +16,10 @@ import * as VApp from 'vuetify/es5/components/VApp';
 import * as VFlex from 'vuetify/es5/components/VGrid';
 import * as VLayout from 'vuetify/es5/components/VGrid';
 import * as VContent from 'vuetify/es5/components/VGrid';
-import * as VDataTable from 'vuetify/es5/components/VDataTable';
-import * as VTextField from 'vuetify/es5/components/VTextField';
+
 import PdfViewer from '@/components/PdfViewerComponent';
+
+import {  remote } from 'electron';
 
 export default {
     name: 'MainView',
@@ -22,6 +29,20 @@ export default {
         ...VLayout,
         ...VContent,
         PdfViewer
+    },
+
+    methods: {
+        openfile() {
+            remote.dialog
+                .showOpenDialog({
+                    filters: [{ name: 'PDF', extensions: ['pdf'] }],
+
+                    properties: ['openFile']
+                })
+                .then(({ filePaths }) => {
+                    remote.getCurrentWindow().webContents.send('load-file-event', { path: filePaths[0] });
+                });
+        }
     },
 
     computed: {

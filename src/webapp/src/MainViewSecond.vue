@@ -1,7 +1,7 @@
 <template>
     <v-app>
         <v-content>
-            <pdf-viewer wrapper-selector=".v-content" :file-path="fileUrl" v-bind:offset="1"></pdf-viewer>
+            <pdf-viewer wrapper-selector=".v-content" :file-path="fileUrl" v-bind:offset="1"/>
         </v-content>
     </v-app>
 </template>
