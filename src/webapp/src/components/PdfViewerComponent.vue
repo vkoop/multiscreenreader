@@ -1,7 +1,7 @@
 <template>
     <div class="pdf-viewer">
         <v-container style="padding: 0;">
-            <v-row align="center" justify="center" v-show="loading" class="full-vw-height">
+            <v-row align="center" justify="center" v-if="loading" class="full-vw-height">
                 <v-progress-circular :size="50" color="red" indeterminate class="loading-spinner" />
             </v-row>
 
