@@ -3,8 +3,8 @@ import { dialog } from "electron";
     <v-app>
         <v-content>
             <pdf-viewer wrapper-selector=".v-content" :file-path="fileUrl" v-bind:offset="0" v-if="fileUrl"/>
-            <v-container  v-if="!fileUrl">
-                <v-row justify="center" align="center" style="height: 100vw;">
+            <v-container  v-if="!fileUrl" fill-height fluid>
+                <v-row justify="center" align="center" style="height: 100%;">
                     <v-btn  @click="openfile()">Select file</v-btn>
                 </v-row>
             </v-container>
