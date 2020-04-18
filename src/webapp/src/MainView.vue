@@ -2,10 +2,10 @@ import { dialog } from "electron";
 <template>
     <v-app>
         <v-content>
-            <pdf-viewer wrapper-selector=".v-content" :file-path="fileUrl" v-bind:offset="0" v-if="fileUrl"/>
-            <v-container  v-if="!fileUrl" fill-height fluid>
+            <pdf-viewer wrapper-selector=".v-content" :file-path="fileUrl" v-bind:offset="0" v-if="fileUrl" />
+            <v-container v-if="!fileUrl" fill-height fluid>
                 <v-row justify="center" align="center" style="height: 100%;">
-                    <v-btn  @click="openfile()">Select file</v-btn>
+                    <v-btn @click="openfile()">Select file</v-btn>
                 </v-row>
             </v-container>
         </v-content>
@@ -19,7 +19,7 @@ import * as VContent from 'vuetify/es5/components/VGrid';
 
 import PdfViewer from '@/components/PdfViewerComponent';
 
-import {  remote } from 'electron';
+import { remote } from 'electron';
 
 export default {
     name: 'MainView',
@@ -28,7 +28,7 @@ export default {
         ...VFlex,
         ...VLayout,
         ...VContent,
-        PdfViewer
+        PdfViewer,
     },
 
     methods: {
@@ -37,18 +37,18 @@ export default {
                 .showOpenDialog({
                     filters: [{ name: 'PDF', extensions: ['pdf'] }],
 
-                    properties: ['openFile']
+                    properties: ['openFile'],
                 })
                 .then(({ filePaths }) => {
                     remote.getCurrentWindow().webContents.send('load-file-event', { path: filePaths[0] });
                 });
-        }
+        },
     },
 
     computed: {
-        fileUrl: function() {
+        fileUrl: function () {
             return this.$store.state.selectedItem;
-        }
-    }
+        },
+    },
 };
 </script>

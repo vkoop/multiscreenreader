@@ -1,7 +1,7 @@
 <template>
     <v-app>
         <v-content>
-            <pdf-viewer wrapper-selector=".v-content" :file-path="fileUrl" v-bind:offset="1"/>
+            <pdf-viewer wrapper-selector=".v-content" :file-path="fileUrl" v-bind:offset="1" />
         </v-content>
     </v-app>
 </template>
@@ -19,12 +19,12 @@ export default {
         ...VFlex,
         ...VLayout,
         ...VContent,
-        PdfViewer
+        PdfViewer,
     },
     computed: {
-        fileUrl: function() {
+        fileUrl: function () {
             return this.$store.state.selectedItem;
-        }
-    }
+        },
+    },
 };
 </script>

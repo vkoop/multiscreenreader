@@ -23,8 +23,8 @@ function createWindow() {
     win = new BrowserWindow({
         fullscreenable: true,
         webPreferences: {
-            nodeIntegration: true
-        }
+            nodeIntegration: true,
+        },
     });
 
     win.webContents.addListener('did-finish-load', () => {
@@ -66,10 +66,10 @@ function createSecondWindow() {
             fullscreen: true,
             fullscreenable: true,
             webPreferences: {
-                nodeIntegration: true
+                nodeIntegration: true,
             },
             x: externalDisplay.bounds.x,
-            y: externalDisplay.bounds.y
+            y: externalDisplay.bounds.y,
         });
 
         if (process.env.WEBPACK_DEV_SERVER_URL) {
@@ -152,9 +152,9 @@ const template = [
                       { role: 'hideothers' },
                       { role: 'unhide' },
                       { type: 'separator' },
-                      { role: 'quit' }
-                  ]
-              }
+                      { role: 'quit' },
+                  ],
+              },
           ]
         : []),
     {
@@ -167,15 +167,15 @@ const template = [
                         .showOpenDialog({
                             filters: [{ name: 'PDF', extensions: ['pdf'] }],
 
-                            properties: ['openFile']
+                            properties: ['openFile'],
                         })
                         .then(({ filePaths }) => {
                             win.webContents.send('load-file-event', { path: filePaths[0] });
                         });
-                }
+                },
             },
-            isMac ? { role: 'close' } : { role: 'quit' }
-        ]
+            isMac ? { role: 'close' } : { role: 'quit' },
+        ],
     },
 
     {
@@ -189,17 +189,17 @@ const template = [
             { role: 'zoomin' },
             { role: 'zoomout' },
             { type: 'separator' },
-            { role: 'togglefullscreen' }
-        ]
+            { role: 'togglefullscreen' },
+        ],
     },
     {
         label: 'Window',
         submenu: [
             { role: 'minimize' },
             { role: 'zoom' },
-            ...(isMac ? [{ type: 'separator' }, { role: 'front' }, { type: 'separator' }, { role: 'window' }] : [{ role: 'close' }])
-        ]
-    }
+            ...(isMac ? [{ type: 'separator' }, { role: 'front' }, { type: 'separator' }, { role: 'window' }] : [{ role: 'close' }]),
+        ],
+    },
 ];
 
 const menu = Menu.buildFromTemplate(template);

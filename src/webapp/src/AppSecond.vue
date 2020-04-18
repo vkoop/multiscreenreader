@@ -10,9 +10,9 @@ const myApp = {
     components: { MainViewSecond },
     data() {
         return {
-            title: 'Vuetify.js'
+            title: 'Vuetify.js',
         };
-    }
+    },
 };
 
 export default myApp;
